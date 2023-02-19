@@ -1,0 +1,43 @@
+---
+- hosts: vm124 
+  gather_facts: no
+  tasks:
+    - name: Install python-docker-py package
+      yum:
+        name: python-docker-py
+        state: present
+    - name: create build directory
+      file:
+        path: /root/demo-dockerfile
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+    - name: copy Dockerfile
+      copy:
+        src: ./Dockerfile
+        dest: /root/demo-dockerfile/Dockerfile
+        owner: root
+        group: root
+        mode: '0644'
+    - name: copy indexfile
+      copy:
+        src: ./index.html
+        dest: /root/demo-dockerfile/index.html
+        owner: root
+        group: root
+        mode: '0644'
+    - name: build container image
+      docker_image:
+        name: nginx-b:1
+        state: present
+        path: /root/demo-dockerfile
+        source: build
+    - name: Create nginx container
+      docker_container:
+        name: nginx
+        image: nginx-b:1
+        state: started
+        recreate: yes
+        published_ports:
+          - 8088:80

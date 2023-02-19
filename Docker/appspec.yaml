@@ -1,0 +1,16 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:us-east-1:100411939642:task-definition/tas1"
+        LoadBalancerInfo: 
+          ContainerName: "we" # Specify the name of your Amazon ECS application's container
+          ContainerPort: "80" # Specify the port for your container where traffic reroutes 
+# Optional properties
+        PlatformVersion: "LATEST" # Specify the version of your Amazon ECS Service
+        NetworkConfiguration:
+          AwsvpcConfiguration:
+            Subnets: ["subnet-03ec675f570843b65","subnet-0efb8f7d7ac7b3dd2"] # Specify one or more comma-separated subnets in your Amazon ECS service
+            SecurityGroups: ["sg-0eb2bd0b59cf67da5"] # Specify one or more comma-separated security groups in your Amazon ECS service
+            AssignPublicIp: "ENABLED" # Specify "ENABLED" or "DISABLED"             

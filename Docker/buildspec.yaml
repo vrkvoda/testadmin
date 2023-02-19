@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 100411939642.dkr.ecr.us-east-1.amazonaws.com
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t 100411939642.dkr.ecr.us-east-1.amazonaws.com/idolnginx:latest .      
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 100411939642.dkr.ecr.us-east-1.amazonaws.com/idolnginx:latest
+      - echo Writing image definitions file...
+      - printf '[{"name":"we","imageUri":"%s"}]' 100411939642.dkr.ecr.us-east-1.amazonaws.com/idolnginx:latest > imagedefinitions.json
+      - printf '{"imageURI":"100411939642.dkr.ecr.us-east-1.amazonaws.com/idolnginx:latest"}'  > imageDetail.json
+artifacts:
+    files: 
+      - imagedefinitions.json
+      - imageDetail.json
+      - appspec.yaml
+      - taskdef.json
