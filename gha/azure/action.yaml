@@ -1,0 +1,31 @@
+name: 'Retrieve Secrets from Azure Key Vault'
+description: 'Retrieves secrets from Azure Key Vault'
+inputs:
+  key-names:
+    description: 'Comma-separated list of secret key names to retrieve from Azure Key Vault'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Check for Azure Service Principal login
+      id: check-az-login
+      shell: bash
+      run: |
+        if ! az account show &>/dev/null; then
+          echo "No active Azure Service Principal login found. Exiting gracefully."
+          exit 0
+        fi
+
+    - name: Retrieve and Mask Secrets from Azure Key Vault
+      shell: bash
+      run: |
+        IFS=',' read -ra KEYS <<< "${{ inputs.key-names }}"
+        for key in "${KEYS[@]}"; do
+          value=$(az keyvault secret show --name "$key" --vault-name ${{ secrets.AZURE_KEY_VAULT }} --query "value" -o tsv)
+          if [ -n "$value" ]; then
+            echo "::add-mask::$value"
+            echo "::set-output name=$key::$value"
+          else
+            echo "Secret $key not found in Key Vault."
+          fi
+        done
