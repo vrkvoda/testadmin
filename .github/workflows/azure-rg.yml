@@ -60,7 +60,7 @@ jobs:
           deploymentName: ${{ github.run_number }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           region: ${{ env.AZURE_REGION }}
-          template: ./bicep_modules/resourceGroup/main.yml
+          template: ./bicep_modules/resourceGroup/main.bicep
           parameters: applicationOwner=${{ env.APP_OWNER }} resourceGroupLocation=${{ env.AZURE_REGION }} applicationName=${{ env.APP_NAME }}           
 
     # Azure logout
