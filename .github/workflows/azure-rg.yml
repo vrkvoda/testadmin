@@ -42,6 +42,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: repo
+      - name: Find Location of folder
+        run: |
+          ls -ltr
+          pwd
 
       - name: Azure CLI script
         uses: azure/cli@v2
@@ -57,7 +61,7 @@ jobs:
           deploymentName: ${{ github.run_number }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           region: ${{ env.AZURE_REGION }}
-          template: ./bicep_modules/resourceGroup/main.yml
+          template: ../../bicep_modules/resourceGroup/main.yml
           parameters: applicationOwner=${{ env.APP_OWNER }} resourceGroupLocation=${{ env.AZURE_REGION }} applicationName=${{ env.APP_NAME }}           
 
     # Azure logout
