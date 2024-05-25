@@ -1,4 +1,4 @@
-name: Azure Login with OIDC And Create Resource Group
+name: Azure Login with OIDC & Create Resource Group
 on:
   workflow_dispatch:
     inputs:
@@ -61,7 +61,7 @@ jobs:
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           region: ${{ env.AZURE_REGION }}
           template: ./bicep_modules/resourceGroup/main.bicep
-          parameters: applicationOwner=${{ env.APP_OWNER }} resourceGroupLocation=${{ env.AZURE_REGION }} applicationName=${{ env.APP_NAME }}           
+          parameters: applicationOwner=${{ env.APP_OWNER }} resourceGroupLocation=${{ env.AZURE_REGION }} applicationName=${{ env.APP_NAME }} resourceGroupName=${{ env.RESOURCE_GROUP_NAME }}          
 
     # Azure logout
       - name: logout
