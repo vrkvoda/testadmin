@@ -1,0 +1,57 @@
+name: Azure Login with OIDC And Create Resource Group
+on:
+  workflow_dispatch:
+    inputs:
+      RESOURCE_GROUP_NAME: 
+        description: 'Resource Group to deploy Azure resources'
+        required: true
+        default: 'vrk-resource-group'
+      AZURE_REGION: 
+        description: 'Azure Region to deploy Azure resources'
+        required: true    
+        default: 'eastus'
+      APP_NAME: 
+        description: 'Name of the Application for Azure resources'
+        required: true
+        default: 'vrktestapp'
+      APP_OWNER: 
+        description: 'Owner of Application for Azure resources'
+        required: true
+        default: 'VRK'        
+env:
+  AZURE_REGION: ${{ github.event.inputs.AZURE_REGION }}
+  RESOURCE_GROUP_NAME: ${{ github.event.inputs.RESOURCE_GROUP_NAME }}
+  APP_NAME: ${{ github.event.inputs.APP_NAME }}
+  APP_OWNER: ${{ github.event.inputs.APP_OWNER }}
+  
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
+            
+      - name: Deploy Bicep template
+        uses: azure/arm-deploy@v1
+        with:
+          scope: subscription
+          deploymentName: ${{ github.run_number }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          template: ./bicep_modules/resourceGroup/main.yml
+          parameters: applicationOwner=${{ env.APP_OWNER }} resourceGroupLocation=${{ env.AZURE_REGION }} applicationName=${{ env.APP_NAME }}
+
+            
