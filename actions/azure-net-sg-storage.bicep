@@ -88,11 +88,7 @@ resource app_nsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
   }
 }
 
-#resource keyVaultRetrive 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
-#  name: 'vrk-test'
-#  scope: resourceGroup('9a27c78d-4bce-4d49-bfcd-27a8996671aa', 'vrk-resource-group')
-#}
-module keyVault './azure-retrive-secret.bicep' = {
+module keyVaultRetrive './azure-retrive-secret.bicep' = {
 name: 'testkv'
 }
 module vm './azure-vm.bicep' = {
