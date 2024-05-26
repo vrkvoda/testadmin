@@ -90,9 +90,6 @@ resource app_nsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
 
 module retriveSecret './azure-retrive-secret.bicep' = {
   name: 'retriveSecret'
-  params: {
-    secretName: 'vmpasswd'
-  }
 }
 
 module vm './azure-vm.bicep' = {
