@@ -53,7 +53,7 @@ jobs:
       #    inlineScript: |
       #      az account show
             
-      - name: Deploy Bicep template
+      - name: Deploy Bicep template Resource Group
         uses: azure/arm-deploy@v1
         with:
           scope: subscription
@@ -62,6 +62,16 @@ jobs:
           region: ${{ env.AZURE_REGION }}
           template: ./bicep_modules/resourceGroup/main.bicep
           parameters: applicationOwner=${{ env.APP_OWNER }} resourceGroupLocation=${{ env.AZURE_REGION }} applicationName=${{ env.APP_NAME }} resourceGroupName=${{ env.RESOURCE_GROUP_NAME }}          
+
+      - name: Deploy Bicep template for KeyVault
+        uses: azure/arm-deploy@v1
+        with:
+          scope: subscription
+          deploymentName: ${{ github.run_number }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          region: ${{ env.AZURE_REGION }}
+          template: ./bicep_modules/keyVault/main.bicep
+          parameters: ./bicep_modules/keyVault/main.test.bicepparam
 
     # Azure logout
       - name: logout
