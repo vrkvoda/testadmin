@@ -11,6 +11,10 @@ param KeyVaultName string = 'testkv'
 param NetworkAclsAllowedIpsList array = []
 param SubnetResourceIdsForServiceEndpoints array = []
 
+@description('(Optional) SoftDelete data retention days. It accepts >=7 and <=90. Default to 90.')
+param kvSoftDeleteRetention int = 90
+
+
 param tags object = {}
 
 var publicNetworkAccess = length(SubnetResourceIdsForServiceEndpoints) > 0 ? 'Enabled' : 'Disabled'
@@ -26,6 +30,7 @@ resource keyvault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     tenantId: subscription().tenantId
     enableRbacAuthorization: true
     enableSoftDelete: true
+    softDeleteRetentionInDays: kvSoftDeleteRetention
     sku: {
       name: 'standard'
       family: 'A'
