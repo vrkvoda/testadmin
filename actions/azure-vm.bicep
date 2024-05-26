@@ -3,7 +3,7 @@
 
 param resourceLocation string ='eastus'
 @secure()
-param adminPassword string
+param adminPassword object
 param adminUsername string
 
 resource vmstore998995 'Microsoft.Storage/storageAccounts@2022-09-01' = {
