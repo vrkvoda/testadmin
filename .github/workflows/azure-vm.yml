@@ -1,0 +1,49 @@
+name: Azure Login with OIDC & Create Resource Group&KeyVault
+on:
+  workflow_dispatch:
+    inputs:
+      RESOURCE_GROUP_NAME: 
+        description: 'Resource Group to deploy Azure resources'
+        required: true
+        default: 'vrk-resource-group'
+      AZURE_REGION: 
+        description: 'Azure Region to deploy Azure resources'
+        required: true    
+        default: 'eastus'     
+env:
+  AZURE_REGION: ${{ github.event.inputs.AZURE_REGION }}
+  RESOURCE_GROUP_NAME: ${{ github.event.inputs.RESOURCE_GROUP_NAME }}
+  
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+            
+      - name: Deploy Bicep template for VM
+        uses: azure/arm-deploy@v1
+        with:
+          scope: resourcegroup
+          deploymentName: ${{ github.run_number }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          region: ${{ env.AZURE_REGION }}
+          template: ./actions/azure-net-sg-storage.bicep
+          parameters: resourceLocation=${{ env.AZURE_REGION }}
+
+    # Azure logout
+      - name: logout
+        run: |
+            az logout
+        if: always()          
