@@ -88,12 +88,8 @@ resource app_nsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
   }
 }
 
-resource vrk-test 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
-  name: 'vrk-test'
-  scope: resourceGroup('9a27c78d-4bce-4d49-bfcd-27a8996671aa', 'vrk-test' )
-}
 
-module vm './vm.bicep' = {
+module vm './azure-vm.bicep' = {
   name: 'deployVM'
   params: {
     resourceLocation: resourceLocation
