@@ -100,6 +100,7 @@ module vm './azure-vm.bicep' = {
   params: {
     resourceLocation: resourceLocation
     adminPassword: retriveSecret.outputs.secretValue
+    adminUsername: 'vrkadmin'
   }
 }
 
