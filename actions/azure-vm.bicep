@@ -1,7 +1,7 @@
 // Putting the resource of the storage account because it is referenced 
 // when creating the VM
 
-param resourceLocation string ='North Europe'
+param resourceLocation string ='eastus'
 @secure()
 param adminPassword string
 
