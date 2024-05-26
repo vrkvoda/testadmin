@@ -49,6 +49,6 @@ resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01'  = {
       }]
     }
   }
-
+}
 output name string = keyvault.name
 output id string = keyvault.id
