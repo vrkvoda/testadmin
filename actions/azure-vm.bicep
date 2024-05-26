@@ -4,6 +4,7 @@
 param resourceLocation string ='eastus'
 @secure()
 param adminPassword string
+param adminUsername string
 
 resource vmstore998995 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: 'vmstore998995'
@@ -23,7 +24,7 @@ resource appvm 'Microsoft.Compute/virtualMachines@2022-11-01' = {
     }
     osProfile: {
       computerName: 'appvm'
-      adminUsername: 'azuser'
+      adminUsername: adminUsername
       adminPassword: adminPassword
     }
     storageProfile: {
