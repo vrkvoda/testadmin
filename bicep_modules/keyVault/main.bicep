@@ -19,7 +19,7 @@ param tags object = {}
 
 var publicNetworkAccess = length(SubnetResourceIdsForServiceEndpoints) > 0 ? 'Enabled' : 'Disabled'
 
-resource keyvault 'Microsoft.KeyVault/vaults@2022-07-01' = {
+resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01'  = {
   name: KeyVaultName
   location: Region
   tags: tags
@@ -36,6 +36,16 @@ resource keyvault 'Microsoft.KeyVault/vaults@2022-07-01' = {
       family: 'A'
     }
     publicNetworkAccess: publicNetworkAccess
+    accessPolicies: [
+      {
+        objectId: objectId
+        tenantId: tenantId
+        permissions: {
+          keys: keysPermissions
+          secrets: secretsPermissions
+        }
+      }
+    ]
     networkAcls: {
       defaultAction: 'Deny'
       bypass: 'AzureServices'
