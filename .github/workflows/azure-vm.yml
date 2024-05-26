@@ -1,4 +1,4 @@
-name: Azure Login with OIDC & Create Resource Group&KeyVault
+name: Azure Login with OIDC & Create VM
 on:
   workflow_dispatch:
     inputs:
