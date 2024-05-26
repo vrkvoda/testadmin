@@ -4,5 +4,4 @@ resource vrk-test 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
 }
 var secretValue = vrk-test.getSecret(vmpasswd).value
 
-@secure()
 output secretValue string = secretValue
