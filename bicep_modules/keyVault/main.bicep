@@ -36,16 +36,7 @@ resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01'  = {
       family: 'A'
     }
     publicNetworkAccess: publicNetworkAccess
-    accessPolicies: [
-      {
-        objectId: objectId
-        tenantId: tenantId
-        permissions: {
-          keys: keysPermissions
-          secrets: secretsPermissions
-        }
-      }
-    ]
+
     networkAcls: {
       defaultAction: 'Deny'
       bypass: 'AzureServices'
