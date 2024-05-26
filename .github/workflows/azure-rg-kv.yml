@@ -66,7 +66,7 @@ jobs:
       - name: Deploy Bicep template for KeyVault
         uses: azure/arm-deploy@v1
         with:
-          scope: subscription
+          scope: resourceGroup
           deploymentName: ${{ github.run_number }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           region: ${{ env.AZURE_REGION }}
