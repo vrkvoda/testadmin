@@ -38,7 +38,7 @@ resource appvm 'Microsoft.Compute/virtualMachines@2022-11-01' = {
         managedDisk: {
           storageAccountType: 'Standard_LRS'
         }      
-        name: 'windowsVM1OSDisk'
+        name: 'ubuntuOSDisk'
         caching: 'ReadWrite'
       }
     }
