@@ -99,7 +99,7 @@ module vm './azure-vm.bicep' = {
   name: 'deployVM'
   params: {
     resourceLocation: resourceLocation
-    adminPassword: keyVault.getSecret('vmpasswd')
+    adminPassword: keyVault.outputs.secretValue
     adminUsername: 'vrkadmin'
   }
 }
