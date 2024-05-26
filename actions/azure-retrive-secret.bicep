@@ -1,4 +1,4 @@
-param secretName string
+param secretName string = 'vmpasswd'
 
 resource vrk-test 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
   name: 'vrk-test'
